@@ -1,16 +1,19 @@
 // mongoDBService.js
 
 // import mongoose from 'mongoose';
+const dotenv = require('dotenv')
+
+dotenv.config();
+
 const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
 
 const connectToMongoDB = async () => {
     try {
-        const uri = process.env.VITE_DB; // Use the MongoDB connection string from the environment
+        const uri = process.env.DB
+        // Use the MongoDB connection string from the environment
 
         await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            // useUnifiedTopology: true,z
         });
 
         console.log('Connected to MongoDB');
@@ -32,4 +35,4 @@ const connectToMongoDB = async () => {
     });
 };
 
-module.exports.connectToMongoDB = connectToMongoDB;
+module.exports = connectToMongoDB;

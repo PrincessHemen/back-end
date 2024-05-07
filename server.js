@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
+// Call the MongoDB connection function when the server starts
 
 // Define route to handle /api/data endpoint
 app.get('/api/data', (req, res) => {
@@ -24,5 +25,5 @@ app.get('/api/data', (req, res) => {
 // Start the Express server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    connectToMongoDB; // Call the MongoDB connection function when the server starts
+    connectToMongoDB(); 
 });
