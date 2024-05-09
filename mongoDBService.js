@@ -1,6 +1,7 @@
 // mongoDBService.js
 
-// import mongoose from 'mongoose';
+// import mongoose from 'mongoose' and dotenv from 'dotenv';
+
 const dotenv = require('dotenv')
 
 dotenv.config();
@@ -10,7 +11,7 @@ const mongoose = require('mongoose');
 const connectToMongoDB = async () => {
     try {
         const uri = process.env.DB
-        // Use the MongoDB connection string from the environment
+        // Use the MongoDB connection string from the env file
 
         await mongoose.connect(uri, {
             // useUnifiedTopology: true,z
