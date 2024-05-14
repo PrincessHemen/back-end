@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 const connectToMongoDB = async () => {
     try {
-        const uri = process.env.DB
+        const uri = process.env.DBlocal 
         // Use the MongoDB connection string from the env file
 
         await mongoose.connect(uri, {
