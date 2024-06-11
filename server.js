@@ -4,6 +4,8 @@ const connectToMongoDB = require('./mongoDBService');
 const Card = require('./models/cardsSchema');
 
 const app = express();
+
+//define port
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
