@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-
-const connectToMongoDB = require('./mongoDBService'); // Import the MongoDB connection function
+const connectToMongoDB = require('./mongoDBService');
+const Card = require('./models/cardsSchema');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -9,41 +9,46 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-// Define route to handle /api/data endpoint
-app.get('/api/data', (req, res) => {
-    // Dummy data
-    const dummyData = {
-        message: 'This is dummy data from the server!'
-    };
-
-    res.json(dummyData);
+app.get('/api/data', async (req, res) => {
+    try {
+        const cards = await Card.find();
+        res.json(cards);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
-// Call the MongoDB connection function when the server starts
+app.post('/api/data', async (req, res) => {
+    const { name, imgUrl } = req.body;
+
+    try {
+        const newCard = new Card({ name, imgUrl });
+        await newCard.save();
+        res.status(201).json(newCard);
+    } catch (error) {
+        console.error('Error saving data:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 connectToMongoDB()
     .then(() => {
         console.log('Connected to MongoDB');
-        // Start the Express server only after successfully connecting to MongoDB
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });
     })
     .catch((error) => {
         console.error('Failed to connect to MongoDB:', error);
-        // Still start the server even if MongoDB connection fails
         app.listen(port, () => {
             console.log(`Server is running on port ${port} (without MongoDB connection)`);
         });
     });
 
-// Error handling middleware to catch any unhandled errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
 });
 
 module.exports = app;
-
-//server.close(() => {
-   // process.exit(1);
- // });
