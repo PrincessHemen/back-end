@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 // Define the card schema
 const cardSchema = new mongoose.Schema({
+    // Define the properties of the card
   name: String,
   imgUrl: String
 });

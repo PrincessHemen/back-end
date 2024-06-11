@@ -11,6 +11,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+//routes for getting cards from DB
 app.get('/api/data', async (req, res) => {
     try {
         const cards = await Card.find();
