@@ -5,13 +5,27 @@ const Card = require('./models/cardsSchema');
 
 const app = express();
 
-//define port
+// Define port
 const port = process.env.PORT || 5000;
 
-app.use(express.json());
-app.use(cors());
+// Set up CORS to allow requests from both localhost and the Vercel app
+const allowedOrigins = ['http://localhost:5173', 'https://dating-app-nine-jet.vercel.app'];
 
-//routes for getting cards from DB
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps, curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
+
+app.use(express.json());
+
+// Routes for getting cards from DB
 app.get('/api/data', async (req, res) => {
     try {
         const cards = await Card.find();
